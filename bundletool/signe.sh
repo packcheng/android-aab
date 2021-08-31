@@ -1,7 +1,7 @@
 #!/bin/bash
 
-UNSIGNED_AAB_NAME="app_unsigned.aab"    #未签名的aab文件名
-SIGNED_AAB_NAME="app_signed.aab"        #已签名的aab文件名
+UNSIGNED_AAB_NAME="output/app_unsigned.aab"    #未签名的aab文件名
+SIGNED_AAB_NAME="output/app_signed.aab"        #已签名的aab文件名
 KEYSTORE_FILE_NAME="packcheng.keystore" #签名文件名
 KEYSTORE_PWD="123456789"
 KEY_ALIAS="packcheng"

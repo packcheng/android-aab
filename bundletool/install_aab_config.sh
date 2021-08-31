@@ -1,20 +1,26 @@
 #!/bin/bash
 AAB_NAME="output/release.aab"
-APKS_NAME="output/app_connected.apks"
+APKS_NAME="output/app_config.apks"
 BUNDLE_JAR="bundletool.jar"
 KS_STORE="packcheng.keystore"
 KEY_ALIAS="packcheng"
 KS_PASS="123456789"
 KEY_PASS="123456789"
+DEVICE_SPEC_FILE_NAME="output/device-spec.json"
 
 currentDir=$(pwd)
 
-echo "移除之前生成的apks"
+if [ ! -e "$currentDir/$DEVICE_SPEC_FILE_NAME" ]; then
+    echo "$currentDir/$DEVICE_SPEC_FILE_NAME 文件不存在!!!"
+    exit 1
+fi
+
+echo "移除之前基于设备配置json生成的apks"
 rm -f "$currentDir/$APKS_NAME"
 
-echo "准备生成连接设备的apks"
+echo "准备生成基于设备配置json的apks"
 java -jar "$currentDir/$BUNDLE_JAR" build-apks \
-  --connected-device \
+  --device-spec="$currentDir/$DEVICE_SPEC_FILE_NAME" \
   --bundle="$currentDir/$AAB_NAME" \
   --output="$currentDir/$APKS_NAME" \
   --ks="$currentDir/$KS_STORE" \
