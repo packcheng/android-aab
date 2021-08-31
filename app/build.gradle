@@ -52,6 +52,37 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    // //修改生成的apk名字
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (variant.buildType.name.equals('release')) {
+                //这个修改输出的APK路径
+                variant.getPackageApplication().outputDirectory = new File("../bundletool/output/")
+                variant.getPackageApplication().outputScope.apkDatas.forEach { apkData ->
+                    //这个修改输出APK的文件名
+                    apkData.outputFileName = "${variant.name}-${variant.versionName}.apk"
+                }
+            }
+        }
+    }
+}
+
+// 拷贝生成的AAB文件
+tasks.whenTaskAdded { task ->
+    if (task.name.startsWith("bundle")) {
+        def renameTaskName = "rename${task.name.capitalize()}Aab"
+        def flavor = task.name.substring("bundle".length()).uncapitalize()
+        tasks.create(renameTaskName, Copy) {
+            def path = "${buildDir}/outputs/bundle/${flavor}/"
+            from(path)
+            include "app-${flavor}.aab"
+            destinationDir file("../bundletool/output/")
+            rename "app-${flavor}.aab", "${flavor}.aab"
+        }
+
+        task.finalizedBy(renameTaskName)
+    }
 }
 
 dependencies {

@@ -21,6 +21,8 @@ allprojects {
 
 }
 
+
 task clean(type: Delete) {
+    delete "${rootProject.rootDir}/bundletool/output/"
     delete rootProject.buildDir
 }
