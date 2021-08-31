@@ -1,0 +1,39 @@
+// 创建连接设备的apks
+java -jar /Users/packcheng/Desktop/bundletool/bundletool.jar build-apks \
+--connected-device \
+--bundle=/Users/packcheng/Desktop/novapro/app/build/outputs/bundle/googleplayRelease/app-googleplay-release.aab \
+--output=/Users/packcheng/Desktop/novapro/app/build/outputs/bundle/googleplayRelease/app-googleplay-release.apks \
+--ks=/Users/packcheng/Desktop/novapro/packcheng.keystore \
+--ks-pass=pass:123456789 \
+--ks-key-alias=packcheng \
+--key-pass=pass:123456789
+
+
+# 安装apks
+java -jar /Users/packcheng/Desktop/bundletool.jar install-apks \
+--apks=/Users/packcheng/Desktop/novapro/app/build/outputs/bundle/googleplayRelease/app-googleplay-release.apks
+
+# 获取连接设备配置
+java -jar /Users/packcheng/Desktop/bundletool.jar get-device-spec \
+--output=/Users/packcheng/Desktop/novapro/app/build/outputs/bundle/googleplayRelease/device-spec.json
+
+# 更加配置创建apks
+java -jar /Users/packcheng/Desktop/bundletool.jar build-apks \
+--device-spec=/Users/packcheng/Desktop/novapro/app/build/outputs/bundle/googleplayRelease/device-spec.json \
+--bundle=/Users/packcheng/Desktop/novapro/app/build/outputs/bundle/googleplayRelease/app-googleplay-release.aab \
+--output=/Users/packcheng/Desktop/novapro/app/build/outputs/bundle/googleplayRelease/app-googleplay-release2.apks \
+--ks=/Users/packcheng/Desktop/novapro/packcheng.keystore \
+--ks-pass=pass:123456789 \
+--ks-key-alias=packcheng \
+--key-pass=pass:123456789
+
+# 启动Activity
+adb shell am start -n com.dinsafer.heliopro.inhouse/com.dinsafer.module.spash.SpashActivity
+
+
+# 签名aab文件
+jarsigner -digestalg SHA1 -sigalg SHA1withRSA \
+-keystore /Users/packcheng/Desktop/bundletool/packcheng.keystore \
+-storepass 123456789 \
+-keypass 123456789 \
+-signedjar /Users/packcheng/Desktop/bundletool/bbb.aab /Users/packcheng/Desktop/bundletool/aaa.aab packcheng
